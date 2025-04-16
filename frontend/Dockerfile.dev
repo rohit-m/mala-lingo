@@ -1,0 +1,18 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Set environment variables
+ENV VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+ENV VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+ENV VITE_API_URL=${VITE_API_URL}
+
+EXPOSE 5173
+
+# Use a shell to run the command to ensure proper environment variable expansion
+CMD ["sh", "-c", "npm run dev -- --host 0.0.0.0"] 

@@ -1,0 +1,163 @@
+# Mala Lingo
+
+A full-stack application built with Vue 3, FastAPI, and Supabase.
+
+## Project Structure
+
+```
+mala-lingo/
+├── frontend/          # Vue 3 frontend application
+│   ├── Dockerfile     # Production Dockerfile
+│   ├── Dockerfile.dev # Development Dockerfile
+│   ├── nginx.conf     # Nginx configuration
+│   └── vite.config.js # Vite configuration
+├── backend/           # FastAPI backend application
+│   ├── Dockerfile     # Production Dockerfile
+│   └── Dockerfile.dev # Development Dockerfile
+├── docker-compose.yml # Docker Compose for development
+├── docker-compose.prod.yml # Docker Compose for production
+├── docker-dev.sh      # Docker development helper script
+├── .env              # Environment variables for development
+├── .env.production   # Environment variables for production
+└── README.md         # This file
+```
+
+## Prerequisites
+
+- Node.js (v16 or higher)
+- Python (v3.8 or higher)
+- Supabase account
+- Docker and Docker Compose
+
+## Setup Instructions
+
+### Using Docker (Recommended)
+
+#### Development Environment
+
+1. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your Supabase credentials
+```
+
+2. Start the development environment using the helper script:
+```bash
+./docker-dev.sh start
+```
+
+Or manually:
+```bash
+docker-compose up -d
+```
+
+The application will be available at:
+- Frontend: http://localhost:5173
+- Backend: http://localhost:8000
+
+#### Docker Development Helper
+
+We provide a helper script to make Docker operations easier:
+
+```bash
+./docker-dev.sh [command]
+```
+
+Available commands:
+- `start` - Start the development environment
+- `stop` - Stop the development environment
+- `restart` - Restart the development environment
+- `logs` - Show logs from all containers
+- `frontend` - Show logs from the frontend container
+- `backend` - Show logs from the backend container
+- `rebuild` - Rebuild and restart the containers
+- `clean` - Remove all containers and volumes
+- `help` - Show help message
+
+#### Production Environment
+
+1. Set up environment variables:
+```bash
+cp .env.example .env.production
+# Edit .env.production with your production Supabase credentials
+```
+
+2. Build and start the production environment:
+```bash
+docker-compose -f docker-compose.prod.yml --env-file .env.production up -d
+```
+
+The application will be available at:
+- Frontend: http://localhost
+- Backend: http://localhost:8000
+
+### Manual Setup (Without Docker)
+
+#### Backend Setup
+
+1. Create a virtual environment:
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your Supabase credentials
+```
+
+4. Run the backend:
+```bash
+uvicorn main:app --reload
+```
+
+#### Frontend Setup
+
+1. Install dependencies:
+```bash
+cd frontend
+npm install
+```
+
+2. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your Supabase credentials
+```
+
+3. Run the development server:
+```bash
+npm run dev
+```
+
+## Troubleshooting
+
+### PR_END_OF_FILE_ERROR
+
+If you encounter a `PR_END_OF_FILE_ERROR` when accessing the frontend, try the following:
+
+1. Rebuild the containers:
+```bash
+./docker-dev.sh rebuild
+```
+
+2. Check the logs for any errors:
+```bash
+./docker-dev.sh frontend
+```
+
+3. Ensure your environment variables are correctly set in the `.env` file.
+
+## Features
+
+- User authentication (login/signup)
+- Dashboard
+- Supabase integration
+- Dockerized for easy deployment 
