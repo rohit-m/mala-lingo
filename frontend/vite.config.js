@@ -14,5 +14,17 @@ export default defineConfig({
     watch: {
       usePolling: true
     }
+  },
+  build: {
+    sourcemap: true,
+    // Improve chunking for better caching
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': ['vue', 'vue-router', 'pinia'],
+          'supabase': ['@supabase/supabase-js']
+        }
+      }
+    }
   }
 })
