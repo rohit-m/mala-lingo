@@ -85,7 +85,6 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import axios from 'axios'
-import confetti from 'canvas-confetti'
 
 const wordMatchingData = ref([])
 const loading = ref(true)
@@ -122,42 +121,51 @@ const isMatched = (id) => {
   return matches.value.some(match => match.malayalamId === id || match.englishId === id)
 }
 
-// Trigger confetti animation
-const triggerConfetti = () => {
-  // Fire confetti from the left side
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { x: 0, y: 0.6 }
-  })
+// Trigger confetti animation with dynamic import
+const triggerConfetti = async () => {
+  try {
+    // Dynamically import the confetti library
+    const confettiModule = await import('canvas-confetti')
+    const confetti = confettiModule.default || confettiModule
 
-  // Fire confetti from the right side
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { x: 1, y: 0.6 }
-  })
+    // Fire confetti from the left side
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { x: 0, y: 0.6 }
+    })
 
-  // Fire confetti from the bottom
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { x: 0.5, y: 1 }
-  })
+    // Fire confetti from the right side
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { x: 1, y: 0.6 }
+    })
 
-  // Fire confetti from the top
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { x: 0.5, y: 0 }
-  })
+    // Fire confetti from the bottom
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { x: 0.5, y: 1 }
+    })
 
-  // Fire a big burst of confetti from the center
-  confetti({
-    particleCount: 200,
-    spread: 160,
-    origin: { x: 0.5, y: 0.5 }
-  })
+    // Fire confetti from the top
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { x: 0.5, y: 0 }
+    })
+
+    // Fire a big burst of confetti from the center
+    confetti({
+      particleCount: 200,
+      spread: 160,
+      origin: { x: 0.5, y: 0.5 }
+    })
+  } catch (error) {
+    console.error('Error loading confetti:', error)
+    // Fallback: just show the completion animation without confetti
+  }
 }
 
 // Check if all matches are completed
