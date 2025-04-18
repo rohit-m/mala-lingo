@@ -98,12 +98,12 @@ const showCompletionAnimation = ref(false)
 
 // Computed properties to filter out matched words and shuffle them
 const malayalamWords = computed(() => {
-  const unmatchedWords = wordMatchingData.value.filter(item => !isMatched(item.id))
+  const unmatchedWords = wordMatchingData.value
   return shuffleArray([...unmatchedWords])
 })
 
 const englishWords = computed(() => {
-  const unmatchedWords = wordMatchingData.value.filter(item => !isMatched(item.id))
+  const unmatchedWords = wordMatchingData.value
   return shuffleArray([...unmatchedWords])
 })
 
@@ -134,7 +134,6 @@ const selectMalayalam = (item) => {
   if (isMatched(item.id)) return
 
   selectedMalayalam.value = item
-
   // If an English word is already selected, check for a match
   if (selectedEnglish.value) {
     checkMatch()
@@ -159,21 +158,16 @@ const checkMatch = () => {
 
   // Check if the selected words belong to the same item
   if (selectedMalayalam.value.id === selectedEnglish.value.id) {
-    // Correct match
     matches.value.push({
       malayalamId: selectedMalayalam.value.id,
       englishId: selectedEnglish.value.id
     })
 
-    // Show match animation
-    showMatchAnimation.value = true
+    // Reset selections after animation completes
     setTimeout(() => {
-      showMatchAnimation.value = false
-    }, 1500)
-
-    // Reset selections
-    selectedMalayalam.value = null
-    selectedEnglish.value = null
+      selectedMalayalam.value = null
+      selectedEnglish.value = null
+    }, 300) // Match the animation duration    
 
     // Check if all matches are completed
     checkCompletion()
@@ -378,9 +372,24 @@ h1 {
   cursor: default;
   opacity: 0.9;
   box-shadow: 0 2px 0 #b3e6cc;
+  animation: subtleHighlight 1s ease-out;
 }
 
-.match-animation {
+@keyframes subtleHighlight {
+  0% {
+    background-color: #58cc02;
+    color: white;
+  }
+
+  100% {
+    background-color: #d4f7e3;
+    color: #58cc02;
+  }
+}
+
+.match-animation,
+.incorrect-animation,
+.completion-animation {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -410,20 +419,6 @@ h1 {
   font-weight: bold;
 }
 
-.incorrect-animation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 75, 75, 0.9);
-  color: white;
-  padding: 2rem;
-  border-radius: 16px;
-  z-index: 1000;
-  animation: fadeInOut 1.5s ease-in-out;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
 .incorrect-content {
   display: flex;
   flex-direction: column;
@@ -438,20 +433,6 @@ h1 {
 .incorrect-text {
   font-size: 1.5rem;
   font-weight: bold;
-}
-
-.completion-animation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(88, 204, 2, 0.9);
-  color: white;
-  padding: 2rem;
-  border-radius: 16px;
-  z-index: 1000;
-  animation: fadeIn 0.5s ease-in-out;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .completion-content {
