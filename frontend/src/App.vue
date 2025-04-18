@@ -8,6 +8,7 @@
       </template>
       <template v-else>
         <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
+        <router-link to="/matching-words" class="nav-link">Word Matching</router-link>
         <button @click="handleLogout" class="nav-link logout-btn">Logout</button>
       </template>
     </nav>

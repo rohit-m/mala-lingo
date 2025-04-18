@@ -73,6 +73,15 @@ async def get_user(token: str):
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid token")
 
+@app.get("/api/word-matching")
+async def get_word_matching():
+    try:
+        response = supabase.table("word_matching").select("*").execute()
+        return {"data": response.data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching word matching data: {str(e)}")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000) 
+

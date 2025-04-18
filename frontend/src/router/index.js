@@ -22,6 +22,12 @@ const routes = [
     name: 'Dashboard',
     component: () => import('../views/Dashboard.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/matching-words',
+    name: 'MatchingWords',
+    component: () => import('../views/MatchingWords.vue'),
+    meta: { requiresAuth: true }
   }
 ]
 
