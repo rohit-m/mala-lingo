@@ -81,12 +81,12 @@ async def get_word_matching():
         response = supabase.table("word_matching").select("*").execute()
         all_data = response.data
         
-        # If we have fewer than 10 entries, return all of them
-        if len(all_data) <= 10:
+        # If we have fewer than 5 entries, return all of them
+        if len(all_data) <= 5:
             return {"data": all_data}
         
-        # Otherwise, randomly select 10 entries
-        random_entries = random.sample(all_data, 10) 
+        # Otherwise, randomly select 5 entries
+        random_entries = random.sample(all_data, 5) 
         return {"data": random_entries}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching word matching data: {str(e)}")
