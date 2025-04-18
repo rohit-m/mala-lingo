@@ -74,6 +74,7 @@
             <div class="completion-icon">🎉</div>
             <div class="completion-text">Congratulations!</div>
             <div class="completion-subtext">You've completed all matches!</div>
+            <button @click="resetGame" class="go-again-button">Go Again</button>
           </div>
         </div>
       </div>
@@ -168,10 +169,8 @@ const checkCompletion = () => {
     // Trigger confetti
     triggerConfetti()
 
-    // Hide completion animation after 5 seconds
-    setTimeout(() => {
-      showCompletionAnimation.value = false
-    }, 5000)
+    // We no longer need to hide the completion animation after a timeout
+    // since we now have a "Go Again" button
   }
 }
 
@@ -493,7 +492,7 @@ h1 {
   padding: 2rem;
   border-radius: 16px;
   z-index: 1000;
-  animation: fadeInOut 5s ease-in-out;
+  animation: fadeIn 0.5s ease-in-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -515,6 +514,43 @@ h1 {
 
 .completion-subtext {
   font-size: 1.2rem;
+}
+
+.go-again-button {
+  background-color: white;
+  color: #58cc02;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  box-shadow: 0 2px 0 #e5e5e5;
+}
+
+.go-again-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #e5e5e5;
+  background-color: #f8f8f8;
+}
+
+.go-again-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 #e5e5e5;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 @keyframes fadeInOut {
