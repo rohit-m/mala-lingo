@@ -1,20 +1,20 @@
 <template>
   <div class="matching-words-container">
     <h1>Word Matching</h1>
-    
+
     <div v-if="loading" class="loading">
       Loading word matching data...
     </div>
-    
+
     <div v-else-if="error" class="error-message">
       {{ error }}
     </div>
-    
+
     <div v-else class="word-matching-content">
       <div v-if="wordMatchingData.length === 0" class="no-data">
         No word matching data available.
       </div>
-      
+
       <div v-else class="word-matching-list">
         <div v-for="(item, index) in wordMatchingData" :key="index" class="word-matching-item">
           <div class="word-card">
@@ -38,9 +38,10 @@ const error = ref(null)
 const fetchWordMatchingData = async () => {
   loading.value = true
   error.value = null
-  
+
   try {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/word-matching`)
+    console.log(response.data)
     wordMatchingData.value = response.data.data
   } catch (err) {
     error.value = err.response?.data?.detail || 'Failed to fetch word matching data'
@@ -68,7 +69,9 @@ h1 {
   text-align: center;
 }
 
-.loading, .no-data, .error-message {
+.loading,
+.no-data,
+.error-message {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
@@ -110,4 +113,4 @@ h1 {
   color: #666;
   line-height: 1.5;
 }
-</style> 
+</style>

@@ -76,7 +76,7 @@ async def get_user(token: str):
 @app.get("/api/word-matching")
 async def get_word_matching():
     try:
-        response = supabase.table("word_matching").select("*").execute()
+        response = supabase.table("word_matching").select("*").order('random()').limit(10).execute()
         return {"data": response.data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching word matching data: {str(e)}")
