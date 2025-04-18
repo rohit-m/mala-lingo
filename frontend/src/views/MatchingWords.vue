@@ -67,6 +67,15 @@
             <div class="incorrect-text">Try Again!</div>
           </div>
         </div>
+
+        <!-- Completion Animation -->
+        <div v-if="showCompletionAnimation" class="completion-animation">
+          <div class="completion-content">
+            <div class="completion-icon">🎉</div>
+            <div class="completion-text">Congratulations!</div>
+            <div class="completion-subtext">You've completed all matches!</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -75,6 +84,7 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import axios from 'axios'
+import confetti from 'canvas-confetti'
 
 const wordMatchingData = ref([])
 const loading = ref(true)
@@ -84,7 +94,7 @@ const selectedEnglish = ref(null)
 const matches = ref([])
 const showMatchAnimation = ref(false)
 const showIncorrectAnimation = ref(false)
-const incorrectMatchIds = ref([])
+const showCompletionAnimation = ref(false)
 
 // Computed properties to filter out matched words and shuffle them
 const malayalamWords = computed(() => {
@@ -109,6 +119,60 @@ const shuffleArray = (array) => {
 // Check if a word is already matched
 const isMatched = (id) => {
   return matches.value.some(match => match.malayalamId === id || match.englishId === id)
+}
+
+// Trigger confetti animation
+const triggerConfetti = () => {
+  // Fire confetti from the left side
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { x: 0, y: 0.6 }
+  })
+
+  // Fire confetti from the right side
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { x: 1, y: 0.6 }
+  })
+
+  // Fire confetti from the bottom
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { x: 0.5, y: 1 }
+  })
+
+  // Fire confetti from the top
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { x: 0.5, y: 0 }
+  })
+
+  // Fire a big burst of confetti from the center
+  confetti({
+    particleCount: 200,
+    spread: 160,
+    origin: { x: 0.5, y: 0.5 }
+  })
+}
+
+// Check if all matches are completed
+const checkCompletion = () => {
+  if (matches.value.length === wordMatchingData.value.length) {
+    // Show completion animation
+    showCompletionAnimation.value = true
+
+    // Trigger confetti
+    triggerConfetti()
+
+    // Hide completion animation after 5 seconds
+    setTimeout(() => {
+      showCompletionAnimation.value = false
+    }, 5000)
+  }
 }
 
 // Select a Malayalam word
@@ -156,6 +220,9 @@ const checkMatch = () => {
     // Reset selections
     selectedMalayalam.value = null
     selectedEnglish.value = null
+
+    // Check if all matches are completed
+    checkCompletion()
   } else {
     // Incorrect match
     // Show incorrect animation
@@ -177,6 +244,7 @@ const resetGame = () => {
   matches.value = []
   selectedMalayalam.value = null
   selectedEnglish.value = null
+  showCompletionAnimation.value = false
 }
 
 const fetchWordMatchingData = async () => {
@@ -413,6 +481,40 @@ h1 {
 .incorrect-text {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.completion-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(88, 204, 2, 0.9);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  z-index: 1000;
+  animation: fadeInOut 5s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.completion-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.completion-icon {
+  font-size: 4rem;
+}
+
+.completion-text {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.completion-subtext {
+  font-size: 1.2rem;
 }
 
 @keyframes fadeInOut {
