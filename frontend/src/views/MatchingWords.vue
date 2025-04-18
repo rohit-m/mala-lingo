@@ -29,7 +29,6 @@
         <div class="columns-container">
           <!-- Malayalam Words Column -->
           <div class="word-column">
-            <h2>Malayalam Words</h2>
             <div class="word-list">
               <div v-for="item in malayalamWords" :key="item.id" class="word-item" :class="{
                 'selected': selectedMalayalam?.id === item.id,
@@ -42,7 +41,6 @@
 
           <!-- English Words Column -->
           <div class="word-column">
-            <h2>English Words</h2>
             <div class="word-list">
               <div v-for="item in englishWords" :key="item.id" class="word-item" :class="{
                 'selected': selectedEnglish?.id === item.id,
