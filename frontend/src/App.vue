@@ -2,13 +2,9 @@
   <div class="app">
     <nav class="navbar">
       <router-link to="/" class="nav-link">Home</router-link>
-      <template v-if="!authStore.user">
-        <router-link to="/login" class="nav-link">Login</router-link>
-        <router-link to="/signup" class="nav-link">Sign Up</router-link>
-      </template>
-      <template v-else>
+      <router-link to="/matching-words" class="nav-link">Word Matching</router-link>
+      <template v-if="authStore.user">
         <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
-        <router-link to="/matching-words" class="nav-link">Word Matching</router-link>
         <button @click="handleLogout" class="nav-link logout-btn">Logout</button>
       </template>
     </nav>

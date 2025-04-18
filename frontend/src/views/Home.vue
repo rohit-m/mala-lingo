@@ -4,12 +4,9 @@
     <p class="subtitle">Your language learning platform</p>
     
     <div class="cta-container">
-      <template v-if="!authStore.user">
-        <router-link to="/signup" class="cta-button primary">Get Started</router-link>
-        <router-link to="/login" class="cta-button secondary">Login</router-link>
-      </template>
-      <template v-else>
-        <router-link to="/dashboard" class="cta-button primary">Go to Dashboard</router-link>
+      <router-link to="/matching-words" class="cta-button primary">Try Word Matching</router-link>
+      <template v-if="authStore.user">
+        <router-link to="/dashboard" class="cta-button secondary">Go to Dashboard</router-link>
       </template>
     </div>
     

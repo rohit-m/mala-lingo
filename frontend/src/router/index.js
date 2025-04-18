@@ -26,8 +26,7 @@ const routes = [
   {
     path: '/matching-words',
     name: 'MatchingWords',
-    component: () => import('../views/MatchingWords.vue'),
-    meta: { requiresAuth: true }
+    component: () => import('../views/MatchingWords.vue')
   }
 ]
 
