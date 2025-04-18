@@ -5,6 +5,7 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 import os
 from typing import Optional
+import random
 
 # Load environment variables
 load_dotenv()
@@ -76,8 +77,17 @@ async def get_user(token: str):
 @app.get("/api/word-matching")
 async def get_word_matching():
     try:
-        response = supabase.table("word_matching").select("*").order('random()').limit(10).execute()
-        return {"data": response.data}
+        # Fetch all entries from the database
+        response = supabase.table("word_matching").select("*").execute()
+        all_data = response.data
+        
+        # If we have fewer than 10 entries, return all of them
+        if len(all_data) <= 10:
+            return {"data": all_data}
+        
+        # Otherwise, randomly select 10 entries
+        random_entries = random.sample(all_data, 10) 
+        return {"data": random_entries}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching word matching data: {str(e)}")
 
