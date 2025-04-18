@@ -199,6 +199,9 @@ const resetGame = () => {
   selectedMalayalam.value = null
   selectedEnglish.value = null
   showCompletionAnimation.value = false
+
+  // Fetch fresh data from the API
+  fetchWordMatchingData()
 }
 
 const fetchWordMatchingData = async () => {
