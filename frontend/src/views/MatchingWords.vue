@@ -19,7 +19,10 @@
 
       <div v-else class="matching-game">
         <div class="game-status">
-          <div class="score">Matches: {{ matches.length }} / {{ wordMatchingData.length }}</div>
+          <div class="score">
+            <span class="score-icon">🏆</span>
+            <span class="score-text">Matches: {{ matches.length }} / {{ wordMatchingData.length }}</span>
+          </div>
           <button @click="resetGame" class="reset-button">Reset Game</button>
         </div>
 
@@ -58,6 +61,14 @@
             <div class="match-text">Correct Match!</div>
           </div>
         </div>
+
+        <!-- Incorrect Match Animation -->
+        <div v-if="showIncorrectAnimation" class="incorrect-animation">
+          <div class="incorrect-content">
+            <div class="incorrect-icon">✗</div>
+            <div class="incorrect-text">Try Again!</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -74,6 +85,8 @@ const selectedMalayalam = ref(null)
 const selectedEnglish = ref(null)
 const matches = ref([])
 const showMatchAnimation = ref(false)
+const showIncorrectAnimation = ref(false)
+const incorrectMatchIds = ref([])
 
 // Computed properties to filter out matched words and shuffle them
 const malayalamWords = computed(() => {
@@ -146,7 +159,14 @@ const checkMatch = () => {
     selectedMalayalam.value = null
     selectedEnglish.value = null
   } else {
-    // Incorrect match - reset selections after a short delay
+    // Incorrect match
+    // Show incorrect animation
+    showIncorrectAnimation.value = true
+    setTimeout(() => {
+      showIncorrectAnimation.value = false
+    }, 1500)
+
+    // Reset selections after a delay
     setTimeout(() => {
       selectedMalayalam.value = null
       selectedEnglish.value = null
@@ -187,18 +207,22 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
 }
 
 h1 {
-  color: #2c3e50;
+  color: #58cc02;
   margin-bottom: 1rem;
   text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
 }
 
 .game-instructions {
   text-align: center;
-  color: #666;
+  color: #4b4b4b;
   margin-bottom: 2rem;
+  font-size: 1.1rem;
 }
 
 .loading,
@@ -210,40 +234,66 @@ h1 {
 }
 
 .error-message {
-  color: #dc3545;
-  background-color: #f8d7da;
-  border-radius: 4px;
+  color: #ff4b4b;
+  background-color: #fff5f5;
+  border-radius: 12px;
+  border: 2px solid #ff4b4b;
 }
 
 .matching-game {
   position: relative;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
 }
 
 .game-status {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e5e5;
 }
 
 .score {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #2c3e50;
+  color: #4b4b4b;
+}
+
+.score-icon {
+  font-size: 1.5rem;
+}
+
+.score-text {
+  color: #4b4b4b;
 }
 
 .reset-button {
-  background-color: #6c757d;
+  background-color: #ff9600;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.7rem 1.5rem;
+  border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 2px 0 #cc7a00;
 }
 
 .reset-button:hover {
-  background-color: #5a6268;
+  background-color: #ffa31a;
+}
+
+.reset-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #cc7a00;
 }
 
 .columns-container {
@@ -254,17 +304,18 @@ h1 {
 
 .word-column {
   flex: 1;
-  background-color: #f8f9fa;
-  border-radius: 8px;
+  background-color: #f7f7f7;
+  border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .word-column h2 {
-  color: #2c3e50;
+  color: #4b4b4b;
   margin-bottom: 1.5rem;
   text-align: center;
   font-size: 1.5rem;
+  font-weight: 700;
 }
 
 .word-list {
@@ -276,28 +327,34 @@ h1 {
 .word-item {
   background-color: white;
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 0 #e5e5e5;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4b4b4b;
+  border: 2px solid transparent;
 }
 
 .word-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 0 #e5e5e5;
 }
 
 .word-item.selected {
-  background-color: #e3f2fd;
-  border: 2px solid #2196f3;
+  background-color: #e5f6ff;
+  border: 2px solid #1cb0f6;
+  color: #1cb0f6;
 }
 
 .word-item.matched {
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: #d4f7e3;
+  color: #58cc02;
   cursor: default;
-  opacity: 0.7;
+  opacity: 0.9;
+  box-shadow: 0 2px 0 #b3e6cc;
 }
 
 .match-animation {
@@ -305,12 +362,13 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(46, 125, 50, 0.9);
+  background-color: rgba(88, 204, 2, 0.9);
   color: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 16px;
   z-index: 1000;
   animation: fadeInOut 1.5s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .match-content {
@@ -325,6 +383,36 @@ h1 {
 }
 
 .match-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.incorrect-animation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 75, 75, 0.9);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  z-index: 1000;
+  animation: fadeInOut 1.5s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.incorrect-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.incorrect-icon {
+  font-size: 3rem;
+}
+
+.incorrect-text {
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -354,6 +442,14 @@ h1 {
 @media (max-width: 768px) {
   .columns-container {
     flex-direction: column;
+  }
+
+  .matching-game {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
   }
 }
 </style>
