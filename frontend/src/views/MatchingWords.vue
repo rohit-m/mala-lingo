@@ -534,16 +534,123 @@ h1 {
 }
 
 @media (max-width: 768px) {
-  .columns-container {
-    flex-direction: column;
-  }
-
-  .matching-game {
-    padding: 1.5rem;
+  .matching-words-container {
+    padding: 1rem;
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .game-instructions {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .matching-game {
+    padding: 1rem;
+  }
+
+  .game-status {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .score {
+    font-size: 1rem;
+  }
+
+  .score-icon {
+    font-size: 1.2rem;
+  }
+
+  .reset-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .columns-container {
+    gap: 1rem;
+  }
+
+  .word-column {
+    padding: 0.8rem;
+  }
+
+  .word-list {
+    gap: 0.5rem;
+  }
+
+  .word-item {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .match-animation,
+  .incorrect-animation,
+  .completion-animation {
+    padding: 1.5rem;
+  }
+
+  .match-icon,
+  .incorrect-icon {
+    font-size: 2.5rem;
+  }
+
+  .match-text,
+  .incorrect-text {
+    font-size: 1.2rem;
+  }
+
+  .completion-icon {
+    font-size: 3rem;
+  }
+
+  .completion-text {
+    font-size: 1.5rem;
+  }
+
+  .completion-subtext {
+    font-size: 1rem;
+  }
+
+  .go-again-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Additional styles for very small screens (iPhone SE, etc.) */
+@media (max-width: 375px) {
+  .matching-words-container {
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .game-instructions {
+    font-size: 0.8rem;
+  }
+
+  .matching-game {
+    padding: 0.8rem;
+  }
+
+  .word-item {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .columns-container {
+    gap: 0.5rem;
+  }
+
+  .word-column {
+    padding: 0.6rem;
   }
 }
 </style>
