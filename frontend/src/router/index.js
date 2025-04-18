@@ -27,6 +27,11 @@ const routes = [
     path: '/matching-words',
     name: 'MatchingWords',
     component: () => import('../views/MatchingWords.vue')
+  },
+  {
+    path: '/flip-test',
+    name: 'FlipTest',
+    component: () => import('../views/FlipTest.vue')
   }
 ]
 
