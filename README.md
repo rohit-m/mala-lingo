@@ -14,6 +14,10 @@ mala-lingo/
 ├── backend/           # FastAPI backend application
 │   ├── Dockerfile     # Production Dockerfile
 │   └── Dockerfile.dev # Development Dockerfile
+├── sheets-sync/       # Google Sheets sync service
+│   ├── Dockerfile     # Dockerfile for sync service
+│   ├── requirements.txt # Python dependencies
+│   └── sync_sheets_data.py # Sync script
 ├── docker-compose.yml # Docker Compose for development
 ├── docker-compose.prod.yml # Docker Compose for production
 ├── docker-dev.sh      # Docker development helper script
@@ -160,4 +164,39 @@ If you encounter a `PR_END_OF_FILE_ERROR` when accessing the frontend, try the f
 - User authentication (login/signup)
 - Dashboard
 - Supabase integration
-- Dockerized for easy deployment 
+- Dockerized for easy deployment
+- Automated Google Sheets data sync
+
+## Google Sheets Sync Service
+
+The application includes an automated service that syncs data from Google Sheets to Supabase. This service:
+
+- Runs every hour
+- Fetches data from specified Google Sheets URLs
+- Compares new data with existing records in Supabase
+- Automatically inserts new records
+- Logs all operations for monitoring
+
+### Configuration
+
+1. Add the following environment variables to your `.env` file:
+```
+SHEET_URLS=url1,url2,url3  # Comma-separated list of Google Sheets export URLs
+```
+
+2. The service will automatically start with your Docker environment:
+```bash
+docker-compose up -d
+```
+
+3. To view sync service logs:
+```bash
+docker-compose logs -f sheets-sync
+```
+
+### Notes
+
+- Google Sheets must be publicly accessible or have proper authentication set up
+- Each sheet should have a unique identifier column (default is 'id')
+- Tables in Supabase are created with the prefix "sheet_" followed by the sheet ID
+- Logs are persisted in a Docker volume for monitoring and debugging 
