@@ -5,6 +5,7 @@ from supabase import create_client
 from datetime import datetime
 import logging
 from dotenv import load_dotenv
+from io import StringIO
 
 # Load environment variables from .env file
 load_dotenv()
@@ -44,7 +45,7 @@ def get_sheet_data(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
-        return pd.read_csv(pd.StringIO(response.text))
+        return pd.read_csv(StringIO(response.text))
     except Exception as e:
         logger.error(f"Error fetching data from {url}: {str(e)}")
         return None
@@ -62,7 +63,7 @@ def sync_data():
     """Main function to sync data from Google Sheets to Supabase"""
     logger.info("Starting data sync process")
     
-    for url, index in SHEET_URLS:
+    for index, url in enumerate(SHEET_URLS):
         try:
             table_name = TABLE_NAME[index]
             
