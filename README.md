@@ -143,33 +143,18 @@ npm run dev
 
 ## Troubleshooting
 
-### PR_END_OF_FILE_ERROR
-
-If you encounter a `PR_END_OF_FILE_ERROR` when accessing the frontend, try the following:
-
-1. Rebuild the containers:
-```bash
-./docker-dev.sh rebuild
-```
-
-2. Check the logs for any errors:
-```bash
-./docker-dev.sh frontend
-```
-
-3. Ensure your environment variables are correctly set in the `.env` file.
-
 ## Features
 
-- User authentication (login/signup)
+- User authentication (login/signup) (hidden)
 - Dashboard
 - Supabase integration
 - Dockerized for easy deployment
-- Automated Google Sheets data sync
+- Automated Google Sheets data sync (in progress)
 
 ## Google Sheets Sync Service
 
-The application includes an automated service that syncs data from Google Sheets to Supabase. This service:
+The application includes an automated service that syncs data from Google Sheets to Supabase. This is to make it easier to update the list of english and malayalam words in the DB.
+This service:
 
 - Runs every hour
 - Fetches data from specified Google Sheets URLs
@@ -182,6 +167,10 @@ The application includes an automated service that syncs data from Google Sheets
 1. Add the following environment variables to your `.env` file:
 ```
 SHEET_URLS=url1,url2,url3  # Comma-separated list of Google Sheets export URLs
+TABLE_NAME=name_of_supabase_table
+
+These should match, url1 to name_of_table1 enables having multiple sheets and multiple tables in the DB.
+This is brittle and is a WIP.
 ```
 
 2. The service will automatically start with your Docker environment:
@@ -200,3 +189,10 @@ docker-compose logs -f sheets-sync
 - Each sheet should have a unique identifier column (default is 'id')
 - Tables in Supabase are created with the prefix "sheet_" followed by the sheet ID
 - Logs are persisted in a Docker volume for monitoring and debugging 
+
+
+### TODO:
+sheets-sync to have authed user to insert to DB
+sheets-sync tests
+backend tests
+frontend tests
