@@ -24,12 +24,40 @@ logger = logging.getLogger(__name__)
 # Supabase configuration
 SUPABASE_URL = os.getenv('SUPABASE_URL')
 SUPABASE_KEY = os.getenv('SUPABASE_KEY')
+SUPABASE_EMAIL = os.getenv('SUPABASE_EMAIL')
+SUPABASE_PASSWORD = os.getenv('SUPABASE_PASSWORD')
 
 if not SUPABASE_URL or not SUPABASE_KEY:
     logger.error("Missing required environment variables: SUPABASE_URL and/or SUPABASE_KEY")
     raise ValueError("Missing required environment variables")
 
+if not SUPABASE_EMAIL or not SUPABASE_PASSWORD:
+    logger.error("Missing required environment variables: SUPABASE_EMAIL and/or SUPABASE_PASSWORD")
+    raise ValueError("Missing required environment variables")
+
+# Initialize Supabase client
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# Authenticate user with email and password
+try:
+    auth_response = supabase.auth.sign_in_with_password({
+        "email": SUPABASE_EMAIL, 
+        "password": SUPABASE_PASSWORD
+    })
+    
+    # Get the access token from the response
+    access_token = auth_response.session.access_token
+    logger.info(f"Successfully authenticated as: {SUPABASE_EMAIL}")
+    
+    # Create a new client with the access token
+    supabase_authed = create_client(
+        SUPABASE_URL, 
+        SUPABASE_KEY,
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
+except Exception as e:
+    logger.error(f"Authentication failed: {str(e)}")
+    raise
 
 # https://docs.google.com/spreadsheets/d/e/2PACX-1vSU7Rxv1j8uWNzH1bQUs9IaYKDFxxOqU43VkAQoVSzmhzupHPRxGA3T69y7YcImPFmcO5VhfhrcWJa4/pub?gid=0&single=true&output=csv
 # Google Sheets URLs (add your URLs here)
@@ -53,7 +81,7 @@ def get_sheet_data(url):
 def get_existing_data(table_name):
     """Fetch existing data from Supabase table"""
     try:
-        response = supabase.table(table_name).select("*").execute()
+        response = supabase_authed.table(table_name).select("*").execute()
         return pd.DataFrame(response.data)
     except Exception as e:
         logger.error(f"Error fetching data from Supabase: {str(e)}")
@@ -78,7 +106,7 @@ def sync_data():
             # If no existing data, insert all new data
             if existing_data.empty:
                 records = new_data.to_dict('records')
-                supabase.table(table_name).insert(records).execute()
+                supabase_authed.table(table_name).insert(records).execute()
                 logger.info(f"Inserted {len(records)} new records into {table_name}")
                 continue
             
@@ -90,7 +118,7 @@ def sync_data():
             
             if not new_records.empty:
                 records = new_records.to_dict('records')
-                supabase.table(table_name).insert(records).execute()
+                supabase_authed.table(table_name).insert(records).execute()
                 logger.info(f"Inserted {len(records)} new records into {table_name}")
             else:
                 logger.info(f"No new records found for {table_name}")
