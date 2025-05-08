@@ -192,7 +192,7 @@ docker-compose logs -f sheets-sync
 
 
 ### TODO:
-- sheets-sync to have authed user to insert to DB
+- Update prod to have latest auth changes and check it works
 - sheets-sync tests
 - backend tests
 - frontend tests
