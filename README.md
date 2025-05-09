@@ -192,7 +192,5 @@ docker-compose logs -f sheets-sync
 
 
 ### TODO:
-- Update prod to have latest auth changes and check it works
 - sheets-sync tests
-- backend tests
 - frontend tests
