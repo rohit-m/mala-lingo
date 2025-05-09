@@ -192,5 +192,6 @@ docker-compose logs -f sheets-sync
 
 
 ### TODO:
+- Create user, store learning data against that user, how do we structure this?
 - sheets-sync tests
 - frontend tests
