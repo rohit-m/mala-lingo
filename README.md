@@ -195,3 +195,45 @@ docker-compose logs -f sheets-sync
 - Create user, store learning data against that user, how do we structure this?
 - sheets-sync tests
 - frontend tests
+
+### Notes:
+- Asked AI with help on structuring lesson plans
+    - Got a really good suggestion, have implemented the DB fields
+
+### Database:
+erDiagram
+    lessons ||--o{ lesson_vocab : has
+    lessons ||--o{ lesson_verbs : has
+    lessons ||--o{ exercises : includes
+
+    lessons {
+        UUID id PK
+        TEXT title
+        TEXT description
+        INTEGER order
+        TIMESTAMP created_at
+    }
+
+    lesson_vocab {
+        UUID id PK
+        UUID lesson_id FK
+        TEXT english_word
+        TEXT malayalam_word
+    }
+
+    lesson_verbs {
+        UUID id PK
+        UUID lesson_id FK
+        TEXT tense
+        TEXT english_word
+        TEXT malayalam_word
+    }
+
+    exercises {
+        UUID id PK
+        UUID lesson_id FK
+        TEXT type
+        TEXT prompt
+        TEXT malayalam
+        TEXT[] word_pool
+    }
