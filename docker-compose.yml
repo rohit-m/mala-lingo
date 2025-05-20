@@ -10,6 +10,10 @@ services:
     environment:
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_KEY=${SUPABASE_KEY}
+      - SUPABASE_EMAIL=${SUPABASE_EMAIL}
+      - SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
+      - SHEET_URLS=${SHEET_URLS}
+      - TABLE_NAME=${TABLE_NAME}      
     volumes:
       - ./backend:/app
     networks:
@@ -25,7 +29,11 @@ services:
     environment:
       - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
       - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
-      - VITE_API_URL=http://159.65.86.208
+      - VITE_API_URL=https://malayaliah.com
+      - VITE_SUPABASE_EMAIL=${SUPABASE_EMAIL}
+      - VITE_SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
+      - VITE_SHEET_URLS=${SHEET_URLS}
+      - VITE_TABLE_NAME=${TABLE_NAME}      
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -48,22 +56,22 @@ services:
       - frontend
       - backend
 
-  sheets-sync:
-    build:
-      context: ./sheets-sync
-      dockerfile: Dockerfile
-    environment:
-      - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_KEY=${SUPABASE_KEY}
-      - SUPABASE_EMAIL=${SUPABASE_EMAIL}
-      - SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
-      - SHEET_URLS=${SHEET_URLS}
-      - TABLE_NAME=${TABLE_NAME}
-    volumes:
-      - sync_logs:/var/log
-    networks:
-      - mala-lingo-network
-    restart: unless-stopped
+  # sheets-sync:
+  #   build:
+  #     context: ./sheets-sync
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     - SUPABASE_URL=${SUPABASE_URL}
+  #     - SUPABASE_KEY=${SUPABASE_KEY}
+  #     - SUPABASE_EMAIL=${SUPABASE_EMAIL}
+  #     - SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
+  #     - SHEET_URLS=${SHEET_URLS}
+  #     - TABLE_NAME=${TABLE_NAME}
+  #   volumes:
+  #     - sync_logs:/var/log
+  #   networks:
+  #     - mala-lingo-network
+  #   restart: unless-stopped
 
 networks:
   mala-lingo-network:
