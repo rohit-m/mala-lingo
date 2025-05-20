@@ -4,6 +4,7 @@
       <router-link to="/" class="nav-link">Home</router-link>
       <router-link to="/matching-words" class="nav-link">Word Matching</router-link>
       <router-link to="/flip-test" class="nav-link">Flip Test</router-link>
+      <router-link to="/lessons" class="nav-link">Lessons</router-link>
       <template v-if="authStore.user">
         <router-link to="/dashboard" class="nav-link">Dashboard</router-link>
         <button @click="handleLogout" class="nav-link logout-btn">Logout</button>
