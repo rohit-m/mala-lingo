@@ -30,7 +30,7 @@ case "$1" in
   start)
     echo "Starting development environment..."
     docker-compose up -d
-    echo "Development environment started. Access frontend at http://localhost:80 or https://malayaliah.com"
+    echo "Development environment started. Access frontend at http://localhost:80 or http://malayaliah.com"
     ;;
   stop)
     echo "Stopping development environment..."
@@ -57,7 +57,7 @@ case "$1" in
     docker-compose down
     docker-compose build --no-cache
     docker-compose up -d
-    echo "Containers rebuilt and started. Access frontend at http://localhost:80 or https://malayaliah.com"
+    echo "Containers rebuilt and started. Access frontend at http://localhost:80 or http://malayaliah.com"
     ;;
   clean)
     echo "Removing all containers and volumes..."

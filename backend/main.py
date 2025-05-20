@@ -20,8 +20,8 @@ app.add_middleware(
         "http://localhost",       # Production
         "http://localhost:80",    # Production alternative
         "http://frontend:5173",   # Docker service name
-        "https://malayaliah.com", # Production domain
-        "https://www.malayaliah.com" # Production domain with www
+        "http://malayaliah.com",  # Production domain with http
+        "http://www.malayaliah.com"  # Production domain with www and http
     ],
     allow_credentials=True,
     allow_methods=["*"],
