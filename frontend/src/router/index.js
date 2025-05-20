@@ -45,8 +45,8 @@ const routes = [
   },
   {
     path: '/practice/:id',
-    name: 'Practice',
-    component: () => import('../views/Practice.vue')
+    name: 'WordPool',
+    component: () => import('../views/WordPool.vue')
   }
 ]
 
