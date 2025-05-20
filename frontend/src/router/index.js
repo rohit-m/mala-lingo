@@ -32,6 +32,21 @@ const routes = [
     path: '/flip-test',
     name: 'FlipTest',
     component: () => import('../views/FlipTest.vue')
+  },
+  {
+    path: '/lessons',
+    name: 'Lessons',
+    component: () => import('../views/Lessons.vue')
+  },
+  {
+    path: '/lesson/:id',
+    name: 'LessonDetail',
+    component: () => import('../views/LessonDetail.vue')
+  },
+  {
+    path: '/practice/:id',
+    name: 'WordPool',
+    component: () => import('../views/WordPool.vue')
   }
 ]
 
