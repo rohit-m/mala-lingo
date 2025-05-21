@@ -5,8 +5,8 @@
         <h1>Make learning Malayalam fun and easy!</h1>
 
         <div class="action-buttons">
-          <router-link to="/signup" class="cta-button primary">GET STARTED</router-link>
-          <router-link to="/login" class="cta-button secondary">I ALREADY HAVE AN ACCOUNT</router-link>
+          <router-link to="/signup" class="cta-button primary">SIGN UP AND SAVE YOUR PROGRESS</router-link>
+          <router-link to="/login" class="cta-button secondary">LOGIN</router-link>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ const authStore = useAuthStore()
 h1 {
   font-size: 2.5rem;
   font-weight: bold;
-  color: #333;
+  color: var(--color-text);
   margin-bottom: 2.5rem;
   line-height: 1.2;
 }
@@ -85,21 +85,21 @@ h1 {
 }
 
 .primary {
-  background-color: #58cc02;
+  background-color: var(--color-pink);
   color: white;
-  border: 2px solid #58a700;
-  box-shadow: 0 4px 0 #58a700;
+  border: 2px solid var(--color-primary-dark);
+  box-shadow: 0 4px 0 var(--color-primary-dark);
 }
 
 .primary:hover {
-  background-color: #61e002;
+  background-color: #f56bbe;
 }
 
 .secondary {
   background-color: white;
-  color: #1cb0f6;
-  border: 2px solid #e5e5e5;
-  box-shadow: 0 4px 0 #e5e5e5;
+  color: var(--color-blue);
+  border: 2px solid var(--color-border);
+  box-shadow: 0 4px 0 var(--color-border);
 }
 
 .secondary:hover {
@@ -139,7 +139,7 @@ h1 {
   right: 40%;
   font-size: 7rem;
   z-index: 5;
-  color: #58cc02;
+  color: var(--color-purple);
 }
 
 .mascot-1 {
@@ -148,6 +148,7 @@ h1 {
   font-size: 4rem;
   transform: rotate(-15deg);
   z-index: 4;
+  color: var(--color-pink);
 }
 
 .mascot-2 {
@@ -156,6 +157,7 @@ h1 {
   font-size: 4.5rem;
   transform: rotate(10deg);
   z-index: 3;
+  color: var(--color-teal);
 }
 
 .mascot-3 {
@@ -164,6 +166,7 @@ h1 {
   font-size: 3.5rem;
   transform: rotate(25deg);
   z-index: 2;
+  color: var(--color-blue);
 }
 
 .mascot-4 {
@@ -172,6 +175,7 @@ h1 {
   font-size: 3.8rem;
   transform: rotate(-20deg);
   z-index: 1;
+  color: var(--color-purple);
 }
 
 .coin {
@@ -179,6 +183,7 @@ h1 {
   font-size: 2.5rem;
   animation: float 3s ease-in-out infinite;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
+  color: var(--color-yellow);
 }
 
 .coin-1 {

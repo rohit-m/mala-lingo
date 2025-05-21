@@ -59,7 +59,7 @@ const handleLogout = async () => {
 }
 
 .navbar {
-  background-color: #2c3e50;
+  background-color: var(--color-purple);
   padding: 1rem;
   display: flex;
   justify-content: space-between;
@@ -88,7 +88,7 @@ const handleLogout = async () => {
 }
 
 .nav-link:hover {
-  background-color: #34495e;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .logout-btn {
@@ -133,7 +133,7 @@ const handleLogout = async () => {
     right: -250px;
     width: 250px;
     height: 100vh;
-    background-color: #2c3e50;
+    background-color: var(--color-purple);
     padding: 80px 1rem 1rem;
     transition: right 0.3s ease;
     z-index: 101;
