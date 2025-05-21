@@ -228,7 +228,7 @@ onMounted(() => {
 }
 
 h1 {
-  color: #58cc02;
+  color: var(--color-purple);
   margin-bottom: 1rem;
   text-align: center;
   font-size: 2.5rem;
@@ -237,7 +237,7 @@ h1 {
 
 .game-instructions {
   text-align: center;
-  color: #4b4b4b;
+  color: var(--color-text-light);
   margin-bottom: 2rem;
   font-size: 1.1rem;
 }
@@ -251,10 +251,10 @@ h1 {
 }
 
 .error-message {
-  color: #ff4b4b;
-  background-color: #fff5f5;
+  color: white;
+  background-color: var(--color-primary-dark);
   border-radius: 12px;
-  border: 2px solid #ff4b4b;
+  border: 2px solid var(--color-primary);
 }
 
 .matching-game {
@@ -271,7 +271,7 @@ h1 {
   align-items: center;
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #e5e5e5;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .score {
@@ -280,7 +280,7 @@ h1 {
   gap: 0.5rem;
   font-size: 1.2rem;
   font-weight: bold;
-  color: #4b4b4b;
+  color: var(--color-text);
 }
 
 .score-icon {
@@ -288,12 +288,12 @@ h1 {
 }
 
 .score-text {
-  color: #4b4b4b;
+  color: var(--color-text);
 }
 
 .reset-button {
-  background-color: #ff9600;
-  color: white;
+  background-color: var(--color-yellow);
+  color: #333;
   border: none;
   padding: 0.7rem 1.5rem;
   border-radius: 12px;
@@ -301,16 +301,16 @@ h1 {
   transition: background-color 0.3s;
   font-weight: bold;
   font-size: 1rem;
-  box-shadow: 0 2px 0 #cc7a00;
+  box-shadow: 0 2px 0 #d9c02c;
 }
 
 .reset-button:hover {
-  background-color: #ffa31a;
+  background-color: #ffe85c;
 }
 
 .reset-button:active {
   transform: translateY(2px);
-  box-shadow: 0 0 0 #cc7a00;
+  box-shadow: 0 0 0 #d9c02c;
 }
 
 .columns-container {
@@ -328,7 +328,7 @@ h1 {
 }
 
 .word-column h2 {
-  color: #4b4b4b;
+  color: var(--color-text);
   margin-bottom: 1.5rem;
   text-align: center;
   font-size: 1.5rem;
@@ -348,27 +348,27 @@ h1 {
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
-  box-shadow: 0 2px 0 #e5e5e5;
+  box-shadow: 0 2px 0 var(--color-border);
   font-size: 1.1rem;
   font-weight: 600;
-  color: #4b4b4b;
+  color: var(--color-text);
   border: 2px solid transparent;
 }
 
 .word-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 0 #e5e5e5;
+  box-shadow: 0 4px 0 var(--color-border);
 }
 
 .word-item.selected {
   background-color: #e5f6ff;
-  border: 2px solid #1cb0f6;
-  color: #1cb0f6;
+  border: 2px solid var(--color-blue);
+  color: var(--color-blue);
 }
 
 .word-item.matched {
-  background-color: #d4f7e3;
-  color: #58cc02;
+  background-color: #eefff9;
+  color: var(--color-teal);
   cursor: default;
   opacity: 0.9;
   box-shadow: 0 2px 0 #b3e6cc;
@@ -377,13 +377,13 @@ h1 {
 
 @keyframes subtleHighlight {
   0% {
-    background-color: #58cc02;
+    background-color: var(--color-teal);
     color: white;
   }
 
   100% {
-    background-color: #d4f7e3;
-    color: #58cc02;
+    background-color: #eefff9;
+    color: var(--color-teal);
   }
 }
 
@@ -394,13 +394,24 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(88, 204, 2, 0.9);
   color: white;
   padding: 2rem;
   border-radius: 16px;
   z-index: 1000;
   animation: fadeInOut 1.5s ease-in-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.match-animation {
+  background-color: rgba(0, 245, 212, 0.9);
+}
+
+.incorrect-animation {
+  background-color: rgba(241, 91, 181, 0.9);
+}
+
+.completion-animation {
+  background-color: rgba(155, 93, 229, 0.9);
 }
 
 .match-content {
@@ -457,7 +468,7 @@ h1 {
 
 .go-again-button {
   background-color: white;
-  color: #58cc02;
+  color: var(--color-purple);
   border: none;
   padding: 0.8rem 2rem;
   border-radius: 12px;
@@ -466,18 +477,18 @@ h1 {
   font-weight: bold;
   font-size: 1.2rem;
   margin-top: 1rem;
-  box-shadow: 0 2px 0 #e5e5e5;
+  box-shadow: 0 2px 0 var(--color-border);
 }
 
 .go-again-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 0 #e5e5e5;
+  box-shadow: 0 4px 0 var(--color-border);
   background-color: #f8f8f8;
 }
 
 .go-again-button:active {
   transform: translateY(1px);
-  box-shadow: 0 0 0 #e5e5e5;
+  box-shadow: 0 0 0 var(--color-border);
 }
 
 @keyframes fadeIn {
