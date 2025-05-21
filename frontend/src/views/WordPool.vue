@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { supabase } from '../lib/supabase'
 
@@ -14,6 +14,7 @@ const error = ref(null)
 const userAnswer = ref([])
 const feedback = ref({ visible: false, correct: false, correctAnswer: '' })
 const activeWordPool = ref([])
+const lessonTitle = ref('')
 
 // Human emojis for the exercise prompts
 const humanEmojis = [
@@ -37,12 +38,32 @@ const currentExercise = computed(() => {
     return exercises.value[currentExerciseIndex.value]
 })
 
+// Update page title when lesson is loaded
+watch(() => lessonTitle.value, (newTitle) => {
+    if (newTitle) {
+        document.title = `Mala Lingo - Practice: ${newTitle}`
+    }
+})
+
 // Fetch exercises for the lesson
 const fetchExercises = async () => {
     loading.value = true
     error.value = null
 
     try {
+        // First fetch the lesson title
+        const { data: lessonData, error: lessonError } = await supabase
+            .from('lessons')
+            .select('title')
+            .eq('id', lessonId.value)
+            .single()
+
+        if (lessonError) throw lessonError
+        if (lessonData) {
+            lessonTitle.value = lessonData.title
+        }
+
+        // Then fetch exercises
         const { data, error: fetchError } = await supabase
             .from('exercises')
             .select('*')

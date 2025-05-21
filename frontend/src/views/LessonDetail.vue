@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { supabase } from '../lib/supabase'
 
@@ -81,6 +81,13 @@ const verbs = ref([])
 const exercises = ref([])
 const loading = ref(true)
 const error = ref(null)
+
+// Update page title when lesson data is loaded
+watch(() => lesson.value, (newLesson) => {
+  if (newLesson?.title) {
+    document.title = `Mala Lingo - ${newLesson.title}`
+  }
+}, { deep: true })
 
 const fetchLessonData = async () => {
   loading.value = true
