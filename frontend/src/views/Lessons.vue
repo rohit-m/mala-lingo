@@ -163,10 +163,22 @@ onMounted(async () => {
   padding: 2rem;
 }
 
+h1 {
+  color: var(--color-purple);
+  margin-bottom: 1rem;
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+}
+
 .lessons-instructions {
   margin-bottom: 2rem;
-  color: #555;
+  color: var(--color-text-light);
   line-height: 1.6;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .loading,
@@ -174,32 +186,38 @@ onMounted(async () => {
 .no-data {
   text-align: center;
   margin: 3rem 0;
-  color: #666;
+  color: var(--color-text-light);
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #f8f8f8;
 }
 
 .error-message {
-  color: #e74c3c;
+  color: white;
+  background-color: var(--color-primary-dark);
 }
 
 .lessons-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
 }
 
 .lesson-card {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--color-border);
+  height: 100%;
 }
 
 .lesson-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .lesson-header {
@@ -211,56 +229,140 @@ onMounted(async () => {
 
 .lesson-title {
   margin: 0;
-  color: #2c3e50;
+  color: var(--color-text);
   font-size: 1.4rem;
+  font-weight: 700;
 }
 
 .lesson-order {
-  background-color: #3498db;
+  background-color: var(--color-blue);
   color: white;
   font-size: 0.9rem;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 20px;
+  font-weight: bold;
 }
 
 .lesson-description {
-  color: #555;
+  color: var(--color-text-light);
   margin-bottom: 1.5rem;
   flex-grow: 1;
+  line-height: 1.5;
 }
 
 .lesson-stats {
   margin-bottom: 1.5rem;
+  background-color: #f8f8f8;
+  padding: 1rem;
+  border-radius: 8px;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.stat-item:last-child {
+  margin-bottom: 0;
 }
 
 .stat-icon {
-  margin-right: 0.5rem;
-  font-size: 1.1rem;
+  margin-right: 0.8rem;
+  font-size: 1.2rem;
 }
 
 .stat-text {
-  color: #555;
+  color: var(--color-text);
+  font-weight: 500;
 }
 
 .start-lesson-btn {
   padding: 0.8rem 1.5rem;
-  background-color: #2ecc71;
-  color: white;
+  background-color: var(--color-teal);
+  color: var(--color-text);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
   margin-top: auto;
+  box-shadow: 0 2px 0 #00d0b0;
 }
 
 .start-lesson-btn:hover {
-  background-color: #27ae60;
+  background-color: #00ffdd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #00d0b0;
+}
+
+.start-lesson-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 #00d0b0;
+}
+
+@media (max-width: 768px) {
+  .lessons-container {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .lessons-instructions {
+    font-size: 0.95rem;
+  }
+
+  .lessons-list {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .lesson-card {
+    padding: 1.2rem;
+  }
+
+  .lesson-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .lesson-order {
+    align-self: flex-start;
+  }
+
+  .lesson-title {
+    font-size: 1.3rem;
+  }
+
+  .start-lesson-btn {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .lessons-container {
+    padding: 1rem 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .lessons-instructions {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .loading,
+  .error-message,
+  .no-data {
+    padding: 1.5rem 1rem;
+    margin: 2rem 0;
+  }
 }
 </style>
