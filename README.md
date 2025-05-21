@@ -190,16 +190,6 @@ docker-compose logs -f sheets-sync
 - Tables in Supabase are created with the prefix "sheet_" followed by the sheet ID
 - Logs are persisted in a Docker volume for monitoring and debugging 
 
-
-### TODO:
-- Create user, store learning data against that user, how do we structure this?
-- sheets-sync tests
-- frontend tests
-
-### Notes:
-- Asked AI with help on structuring lesson plans
-    - Got a really good suggestion, have implemented the DB fields
-
 ### Database:
 ```mermaid
 erDiagram
@@ -239,3 +229,17 @@ erDiagram
         TEXT[] word_pool
     }
 ```
+
+### TODO:
+- Refine lessons that exist right now
+    - Some of the translations dont make sense
+    - Add more tasks per lesson (word pool lessons)
+    - Sort out styles so lessons fits on 1 screen
+- Create user, store learning data against that user, how do we structure this?
+- sheets-sync tests
+- frontend tests
+- Appify the app
+
+### Notes:
+- Asked AI with help on structuring lesson plans
+    - Got a really good suggestion, have implemented the DB fields
