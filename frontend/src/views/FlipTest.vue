@@ -32,14 +32,13 @@
                 </div>
 
                 <div class="cards-grid">
-                    <div v-for="item in wordMatchingData" :key="item.id" class="card-container"
-                        :class="{ 'is-flipped': flippedCards[item.id] }">
-                        <div class="card" @click="flipCard(item.id)">
-                            <div class="card-front">
+                    <div v-for="item in wordMatchingData" :key="item.id" class="card-container">
+                        <div class="card" @click="flipCard(item.id)" :class="{ 'is-flipped': flippedCards[item.id] }">
+                            <div class="card-face card-front">
                                 <div class="word">{{ item.malayalam_word }}</div>
                                 <div class="hint">Click to reveal</div>
                             </div>
-                            <div class="card-back">
+                            <div class="card-face card-back">
                                 <div class="word">{{ item.english_word }}</div>
                                 <div class="hint">Click to hide</div>
                             </div>
@@ -102,7 +101,7 @@ onMounted(() => {
 }
 
 h1 {
-    color: #58cc02;
+    color: var(--color-purple);
     margin-bottom: 1rem;
     text-align: center;
     font-size: 2.5rem;
@@ -111,7 +110,7 @@ h1 {
 
 .game-instructions {
     text-align: center;
-    color: #4b4b4b;
+    color: var(--color-text-light);
     margin-bottom: 2rem;
     font-size: 1.1rem;
 }
@@ -125,10 +124,10 @@ h1 {
 }
 
 .error-message {
-    color: #ff4b4b;
-    background-color: #fff5f5;
+    color: white;
+    background-color: var(--color-primary-dark);
     border-radius: 12px;
-    border: 2px solid #ff4b4b;
+    border: 2px solid var(--color-primary);
 }
 
 .matching-game {
@@ -145,7 +144,7 @@ h1 {
     align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid #e5e5e5;
+    border-bottom: 2px solid var(--color-border);
 }
 
 .score {
@@ -154,7 +153,7 @@ h1 {
     gap: 0.5rem;
     font-size: 1.2rem;
     font-weight: bold;
-    color: #4b4b4b;
+    color: var(--color-text);
 }
 
 .score-icon {
@@ -162,7 +161,7 @@ h1 {
 }
 
 .score-text {
-    color: #4b4b4b;
+    color: var(--color-text);
 }
 
 .button-group {
@@ -185,33 +184,34 @@ h1 {
 }
 
 .new-cards-button {
-    background-color: #58cc02;
-    box-shadow: 0 2px 0 #3aa876;
+    background-color: var(--color-teal);
+    box-shadow: 0 2px 0 #00d0b0;
 }
 
 .new-cards-button:hover {
-    background-color: #5cdb02;
+    background-color: #00ffdd;
     transform: translateY(-2px);
 }
 
 .new-cards-button:active {
     transform: translateY(1px);
-    box-shadow: 0 0 0 #3aa876;
+    box-shadow: 0 0 0 #00d0b0;
 }
 
 .reset-button {
-    background-color: #ff9600;
-    box-shadow: 0 2px 0 #cc7a00;
+    background-color: var(--color-yellow);
+    color: #333;
+    box-shadow: 0 2px 0 #d9c02c;
 }
 
 .reset-button:hover {
-    background-color: #ffa31a;
+    background-color: #ffe85c;
     transform: translateY(-2px);
 }
 
 .reset-button:active {
     transform: translateY(1px);
-    box-shadow: 0 0 0 #cc7a00;
+    box-shadow: 0 0 0 #d9c02c;
 }
 
 .button-icon {
@@ -226,60 +226,61 @@ h1 {
 }
 
 .card-container {
-    perspective: 1000px;
     height: 200px;
+    perspective: 1000px;
 }
 
 .card {
     position: relative;
     width: 100%;
     height: 100%;
+    cursor: pointer;
     transform-style: preserve-3d;
     transition: transform 0.6s;
-    cursor: pointer;
 }
 
-.card-container.is-flipped .card {
+.card.is-flipped {
     transform: rotateY(180deg);
 }
 
-.card-front,
-.card-back {
+.card-face {
     position: absolute;
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 1.5rem;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card-front {
     background-color: #fff;
-    border: 2px solid #e5e5e5;
+    border: 2px solid var(--color-border);
+    transform: rotateY(0deg);
 }
 
 .card-back {
-    background-color: #e5f6ff;
-    border: 2px solid #1cb0f6;
+    background-color: rgba(0, 187, 249, 0.1);
+    border: 2px solid var(--color-blue);
     transform: rotateY(180deg);
 }
 
 .word {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #4b4b4b;
+    color: var(--color-text);
     margin-bottom: 1rem;
     text-align: center;
 }
 
 .hint {
     font-size: 0.9rem;
-    color: #888;
+    color: var(--color-text-light);
     text-align: center;
 }
 

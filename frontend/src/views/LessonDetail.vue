@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { supabase } from '../lib/supabase'
 
@@ -81,6 +81,13 @@ const verbs = ref([])
 const exercises = ref([])
 const loading = ref(true)
 const error = ref(null)
+
+// Update page title when lesson data is loaded
+watch(() => lesson.value, (newLesson) => {
+  if (newLesson?.title) {
+    document.title = `Mala Lingo - ${newLesson.title}`
+  }
+}, { deep: true })
 
 const fetchLessonData = async () => {
   loading.value = true
@@ -155,15 +162,26 @@ onMounted(async () => {
   padding: 2rem;
 }
 
+h1 {
+  color: var(--color-purple);
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
 .loading,
 .error-message {
   text-align: center;
   margin: 3rem 0;
-  color: #666;
+  color: var(--color-text-light);
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #f8f8f8;
 }
 
 .error-message {
-  color: #e74c3c;
+  color: white;
+  background-color: var(--color-primary-dark);
 }
 
 .lesson-header {
@@ -171,20 +189,23 @@ onMounted(async () => {
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .lesson-order {
-  background-color: #3498db;
+  background-color: var(--color-blue);
   color: white;
   font-size: 0.9rem;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 20px;
+  font-weight: bold;
 }
 
 .lesson-description {
-  color: #555;
+  color: var(--color-text-light);
   margin-bottom: 2rem;
   line-height: 1.6;
+  font-size: 1.1rem;
 }
 
 .lesson-sections {
@@ -195,27 +216,31 @@ onMounted(async () => {
 
 .section {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 1.5rem;
+  border: 1px solid var(--color-border);
 }
 
 .section-title {
   display: flex;
   align-items: center;
   margin-top: 0;
-  color: #2c3e50;
+  color: var(--color-purple);
   margin-bottom: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .section-icon {
-  margin-right: 0.5rem;
+  margin-right: 0.8rem;
+  font-size: 1.3rem;
 }
 
 .empty-section {
   text-align: center;
-  color: #777;
+  color: var(--color-text-light);
   padding: 1.5rem 0;
+  font-style: italic;
 }
 
 /* Vocabulary styles */
@@ -228,23 +253,31 @@ onMounted(async () => {
 .vocab-item {
   display: flex;
   align-items: center;
-  padding: 0.8rem;
-  border-radius: 6px;
+  padding: 1rem;
+  border-radius: 8px;
   background-color: #f8f9fa;
+  transition: transform 0.2s;
+  border: 1px solid var(--color-border);
+}
+
+.vocab-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .word-arrow {
-  margin: 0 0.5rem;
-  color: #7f8c8d;
+  margin: 0 0.8rem;
+  color: var(--color-text-light);
+  font-weight: bold;
 }
 
 .malayalam-word {
   font-weight: bold;
-  color: #2c3e50;
+  color: var(--color-pink);
 }
 
 .english-word {
-  color: #34495e;
+  color: var(--color-text);
 }
 
 /* Verbs styles */
@@ -255,16 +288,25 @@ onMounted(async () => {
 }
 
 .verb-item {
-  padding: 0.8rem;
-  border-radius: 6px;
+  padding: 1rem;
+  border-radius: 8px;
   background-color: #f8f9fa;
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s;
+}
+
+.verb-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .verb-tense {
   font-size: 0.9rem;
   font-weight: bold;
-  color: #3498db;
-  margin-bottom: 0.5rem;
+  color: var(--color-blue);
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .verb-words {
@@ -280,31 +322,122 @@ onMounted(async () => {
 
 .start-button {
   padding: 0.8rem 1.5rem;
-  background-color: #2ecc71;
-  color: white;
+  background-color: var(--color-teal);
+  color: var(--color-text);
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 2px 0 #00d0b0;
+  flex: 1;
 }
 
 .start-button:hover {
-  background-color: #27ae60;
+  background-color: #00ffdd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 #00d0b0;
+}
+
+.start-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 #00d0b0;
 }
 
 .nav-button {
   padding: 0.8rem 1.5rem;
-  background-color: #3498db;
+  background-color: var(--color-blue);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 2px 0 var(--color-secondary-dark);
 }
 
 .nav-button:hover {
-  background-color: #2980b9;
+  background-color: #0cc0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 0 var(--color-secondary-dark);
+}
+
+.nav-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 var(--color-secondary-dark);
+}
+
+@media (max-width: 768px) {
+  .lesson-detail-container {
+    padding: 1.5rem 1rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .lesson-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .lesson-order {
+    align-self: flex-start;
+  }
+
+  .lesson-description {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section {
+    padding: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .vocab-list {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 375px) {
+  .lesson-detail-container {
+    padding: 1rem 0.8rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .vocab-item,
+  .verb-item {
+    padding: 0.8rem;
+  }
+
+  .vocab-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .verb-words {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .word-arrow {
+    transform: rotate(90deg);
+    margin: 0;
+  }
 }
 </style>

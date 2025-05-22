@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    expose:
+      - "8000"
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - SUPABASE_EMAIL=${SUPABASE_EMAIL}
+      - SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
+      - SHEET_URLS=${SHEET_URLS}
+      - TABLE_NAME=${TABLE_NAME}      
+    volumes:
+      - ./backend:/app
+    networks:
+      - mala-lingo-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    expose:
+      - "5173"
+    environment:
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+      - VITE_API_URL=http://localhost
+      - VITE_SUPABASE_EMAIL=${SUPABASE_EMAIL}
+      - VITE_SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
+      - VITE_SHEET_URLS=${SHEET_URLS}
+      - VITE_TABLE_NAME=${TABLE_NAME}      
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - mala-lingo-network
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - mala-lingo-network
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+
+  sheets-sync:
+    build:
+      context: ./sheets-sync
+      dockerfile: Dockerfile
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - SUPABASE_EMAIL=${SUPABASE_EMAIL}
+      - SUPABASE_PASSWORD=${SUPABASE_PASSWORD}
+      - SHEET_URLS=${SHEET_URLS}
+      - TABLE_NAME=${TABLE_NAME}
+    volumes:
+      - sync_logs:/var/log
+    networks:
+      - mala-lingo-network
+    restart: unless-stopped
+
+networks:
+  mala-lingo-network:
+    driver: bridge
+
+volumes:
+  sync_logs: 
