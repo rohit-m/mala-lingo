@@ -382,6 +382,25 @@ onMounted(async () => {
     padding: 0.25rem;
 }
 
+/* Desktop optimization to make the continue button visible without scrolling */
+@media (min-width: 768px) {
+    .word-pool {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .practice-container {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .action-buttons {
+        position: sticky;
+        bottom: 1rem;
+        margin-top: 1rem;
+    }
+}
+
 .pool-word {
     background-color: #fff;
     border: 1px solid var(--color-border);
@@ -552,6 +571,7 @@ onMounted(async () => {
     }
 }
 
+/* Fix for extremely small screens */
 @media (max-width: 340px) {
     .practice-container {
         padding: 0.25rem;
@@ -565,6 +585,32 @@ onMounted(async () => {
     .pool-word {
         padding: 0.35rem 0.5rem;
         font-size: 0.85rem;
+    }
+}
+
+/* Fix for desktop to ensure everything fits without scrolling */
+@media (min-width: 768px) and (min-height: 700px) {
+    .practice-container {
+        justify-content: space-between;
+        padding: 1.5rem;
+    }
+
+    .exercise-content {
+        gap: 1rem;
+    }
+
+    .answer-area {
+        margin-bottom: 0;
+    }
+
+    .action-buttons {
+        padding-bottom: 0;
+        margin-top: 1rem;
+    }
+
+    .submit-button,
+    .next-button {
+        max-width: 300px;
     }
 }
 </style>
