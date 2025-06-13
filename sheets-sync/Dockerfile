@@ -15,9 +15,19 @@ COPY sync_sheets_data.py .
 # Create the log file
 RUN touch /var/log/sync.log
 
-# Add crontab file
-RUN echo "0 * * * * /usr/local/bin/python /app/sync_sheets_data.py >> /var/log/sync.log 2>&1" > /etc/cron.d/sync-cron
-RUN chmod 0644 /etc/cron.d/sync-cron
+# Create a startup script that captures environment variables
+RUN echo '#!/bin/bash\n\
+# Capture environment variables for cron\n\
+printenv | grep -E "^(SUPABASE_|SHEET_|TABLE_)" > /etc/environment\n\
+\n\
+# Add cron job that sources environment\n\
+echo "*/5 * * * * . /etc/environment; /usr/local/bin/python /app/sync_sheets_data.py >> /var/log/sync.log 2>&1" > /etc/cron.d/sync-cron\n\
+chmod 0644 /etc/cron.d/sync-cron\n\
+\n\
+# Start cron\n\
+exec cron -f' > /start.sh
 
-# Run cron in the foreground
-CMD ["cron", "-f"] 
+RUN chmod +x /start.sh
+
+# Use the startup script instead of cron directly
+CMD ["/start.sh"] 
