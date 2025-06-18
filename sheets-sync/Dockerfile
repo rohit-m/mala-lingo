@@ -12,13 +12,16 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the sync script
 COPY sync_sheets_data.py .
 
+# Copy the environment file
+COPY .env.production /app/.env.production
+
 # Create the log file
 RUN touch /var/log/sync.log
 
-# Create a startup script that captures environment variables
+# Create a startup script that uses the .env file
 RUN echo '#!/bin/bash\n\
-# Capture environment variables for cron\n\
-printenv | grep -E "^(SUPABASE_|SHEET_|TABLE_)" > /etc/environment\n\
+# Copy .env file to /etc/environment for cron\n\
+cp /app/.env.production /etc/environment\n\
 \n\
 # Add cron job that sources environment\n\
 echo "*/5 * * * * . /etc/environment; /usr/local/bin/python /app/sync_sheets_data.py >> /var/log/sync.log 2>&1" > /etc/cron.d/sync-cron\n\
