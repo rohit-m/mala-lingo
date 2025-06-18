@@ -27,6 +27,8 @@ cp /app/.env.production /etc/environment\n\
 echo "*/5 * * * * . /etc/environment; /usr/local/bin/python /app/sync_sheets_data.py >> /var/log/sync.log 2>&1" > /etc/cron.d/sync-cron\n\
 chmod 0644 /etc/cron.d/sync-cron\n\
 \n\
+# Apply cron job\n\
+crontab /etc/cron.d/sync-cron\n\
 # Start cron\n\
 exec cron -f' > /start.sh
 
