@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import os
-from typing import Optional
+from typing import Optional, List
 import random
 
 # Load environment variables
@@ -34,6 +34,10 @@ supabase: Client = create_client(
     os.getenv("SUPABASE_KEY")
 )
 
+# Environment variables for Supabase auth
+SUPABASE_EMAIL = os.getenv("SUPABASE_EMAIL")
+SUPABASE_PASSWORD = os.getenv("SUPABASE_PASSWORD")
+
 class UserCreate(BaseModel):
     email: str
     password: str
@@ -41,6 +45,33 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     email: str
     password: str
+
+class LessonResponse(BaseModel):
+    id: int
+    title: str
+    description: str
+    order: int
+    vocab_count: int
+    verb_count: int
+    exercise_count: int
+
+# Authenticate with Supabase using service account credentials
+async def authenticate_with_supabase():
+    try:
+        if not SUPABASE_EMAIL or not SUPABASE_PASSWORD:
+            raise Exception('Supabase email or password is not configured')
+
+        response = supabase.auth.sign_in_with_password({
+            "email": SUPABASE_EMAIL,
+            "password": SUPABASE_PASSWORD
+        })
+
+        if response.session is None:
+            raise Exception('Authentication failed')
+
+        return response.session
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Authentication error: {str(e)}")
 
 @app.post("/api/auth/signup")
 async def signup(user: UserCreate):
@@ -75,6 +106,56 @@ async def get_user(token: str):
         return {"user": user}
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid token")
+
+@app.get("/api/lessons", response_model=List[LessonResponse])
+async def get_lessons():
+    """
+    Fetch all lessons with their vocabulary, verb, and exercise counts.
+    """
+    try:
+        # Authenticate with Supabase first
+        await authenticate_with_supabase()
+
+        # Fetch lessons
+        response = supabase.table("lessons").select("*").order("order").execute()
+        
+        if not response.data:
+            return []
+
+        lessons_data = response.data
+
+        # For each lesson, get counts of vocab, verbs, and exercises
+        lessons_with_counts = []
+        for lesson in lessons_data:
+            # Count vocabulary items
+            vocab_response = supabase.table("lesson_vocab").select("*", count="exact").eq("lesson_id", lesson["id"]).execute()
+            vocab_count = vocab_response.count if vocab_response.count is not None else 0
+
+            # Count verbs
+            verb_response = supabase.table("lesson_verbs").select("*", count="exact").eq("lesson_id", lesson["id"]).execute()
+            verb_count = verb_response.count if verb_response.count is not None else 0
+
+            # Count exercises
+            exercise_response = supabase.table("exercises").select("*", count="exact").eq("lesson_id", lesson["id"]).execute()
+            exercise_count = exercise_response.count if exercise_response.count is not None else 0
+
+            lesson_with_counts = {
+                "id": lesson["id"],
+                "title": lesson["title"],
+                "description": lesson["description"],
+                "order": lesson["order"],
+                "vocab_count": vocab_count,
+                "verb_count": verb_count,
+                "exercise_count": exercise_count
+            }
+            lessons_with_counts.append(lesson_with_counts)
+
+        return lessons_with_counts
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching lessons: {str(e)}")
 
 @app.get("/api/word-matching")
 async def get_word_matching():

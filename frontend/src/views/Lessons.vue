@@ -1,95 +1,45 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { supabase } from '../lib/supabase'
+import axios from 'axios'
 
 const lessons = ref([])
 const loading = ref(true)
 const error = ref(null)
 const router = useRouter()
 
-// Environment variables for Supabase auth
-const SUPABASE_EMAIL = import.meta.env.VITE_SUPABASE_EMAIL || ''
-const SUPABASE_PASSWORD = import.meta.env.VITE_SUPABASE_PASSWORD || ''
+// Get API URL from environment
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 // Sort lessons by order
 const sortedLessons = computed(() => {
   return [...lessons.value].sort((a, b) => a.order - b.order)
 })
 
-// Authenticate with Supabase using email and password
-const authenticateWithSupabase = async () => {
-  try {
-    if (!SUPABASE_EMAIL || !SUPABASE_PASSWORD) {
-      throw new Error('Supabase email or password is not configured')
-    }
-
-    const { data, error: authError } = await supabase.auth.signInWithPassword({
-      email: SUPABASE_EMAIL,
-      password: SUPABASE_PASSWORD
-    })
-
-    if (authError) throw authError
-
-    console.log('Successfully authenticated with Supabase')
-    return data.session
-  } catch (e) {
-    console.error('Authentication error:', e)
-    throw e
-  }
-}
-
-// Fetch all lessons with counts
+// Fetch all lessons with counts from the backend API
 const fetchLessons = async () => {
   loading.value = true
   error.value = null
 
   try {
-    // Authenticate with Supabase first
-    await authenticateWithSupabase()
+    const response = await axios.get(`${API_URL}/api/lessons`)
 
-    // Fetch lessons
-    const { data: lessonsData, error: lessonsError } = await supabase
-      .from('lessons')
-      .select('*')
-      .order('order')
-
-    if (lessonsError) throw lessonsError
-
-    // For each lesson, get counts of vocab, verbs, and exercises
-    const lessonsWithCounts = await Promise.all(lessonsData.map(async (lesson) => {
-      // Count vocabulary items
-      const { count: vocabCount, error: vocabError } = await supabase
-        .from('lesson_vocab')
-        .select('*', { count: 'exact', head: true })
-        .eq('lesson_id', lesson.id)
-
-      // Count verbs
-      const { count: verbCount, error: verbError } = await supabase
-        .from('lesson_verbs')
-        .select('*', { count: 'exact', head: true })
-        .eq('lesson_id', lesson.id)
-
-      // Count exercises
-      const { count: exerciseCount, error: exerciseError } = await supabase
-        .from('exercises')
-        .select('*', { count: 'exact', head: true })
-        .eq('lesson_id', lesson.id)
-
-      return {
-        ...lesson,
-        vocab_count: vocabCount,
-        verb_count: verbCount,
-        exercise_count: exerciseCount
-      }
-    }))
-    console.log("lessonsData", lessonsData)
-    console.log("lessonsError", lessonsError)
-    console.log("lessonsWithCounts", lessonsWithCounts)
-    lessons.value = lessonsWithCounts
+    console.log("lessons response:", response.data)
+    lessons.value = response.data
   } catch (e) {
     console.error('Error fetching lessons:', e)
-    error.value = 'Failed to load lessons. Please try again later.'
+
+    // Handle different error types
+    if (e.response) {
+      // Server responded with error status
+      error.value = e.response.data.detail || 'Failed to load lessons. Please try again later.'
+    } else if (e.request) {
+      // Request made but no response
+      error.value = 'Unable to reach the server. Please check your connection.'
+    } else {
+      // Something else happened
+      error.value = 'An unexpected error occurred. Please try again later.'
+    }
   } finally {
     loading.value = false
   }
