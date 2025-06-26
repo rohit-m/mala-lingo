@@ -87,6 +87,16 @@ const fetchExercises = async () => {
     }
 }
 
+// Helper function to shuffle an array using Fisher-Yates algorithm
+const shuffleArray = (array) => {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+}
+
 // Reset the current exercise
 const resetExercise = () => {
     userAnswer.value = []
@@ -94,7 +104,8 @@ const resetExercise = () => {
     currentExerciseEmoji.value = getRandomHumanEmoji()
 
     if (currentExercise.value?.word_pool) {
-        activeWordPool.value = [...currentExercise.value.word_pool]
+        // Randomize the word pool before setting it
+        activeWordPool.value = shuffleArray(currentExercise.value.word_pool)
     } else {
         activeWordPool.value = []
     }
