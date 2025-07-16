@@ -24,7 +24,7 @@ RUN echo '#!/bin/bash\n\
 cp /app/.env.production /etc/environment\n\
 \n\
 # Add cron job that sources environment\n\
-echo "*/5 * * * * . /etc/environment; /usr/local/bin/python /app/sync_sheets_data.py >> /var/log/sync.log 2>&1" > /etc/cron.d/sync-cron\n\
+echo "0 */2 * * * . /etc/environment; /usr/local/bin/python /app/sync_sheets_data.py >> /var/log/sync.log 2>&1" > /etc/cron.d/sync-cron\n\
 chmod 0644 /etc/cron.d/sync-cron\n\
 \n\
 # Apply cron job\n\
