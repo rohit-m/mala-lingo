@@ -1,20 +1,11 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import { useRouter } from 'vue-router'
-import Button from './components/button.vue'
-
-const router = useRouter()
+import AppNavigation from './components/layout/AppNavigation.vue'
 </script>
 
 <template>
   <div class="app">
-    <div class="nav">
-      <div class="button-container">
-        <Button variant="outlined" label="Home" :onClick="() => {
-          router.push('/')
-        }" />
-      </div>
-    </div>
+    <AppNavigation />
     <main class="main-content">
       <router-view></router-view>
     </main>
@@ -24,16 +15,14 @@ const router = useRouter()
 
 
 <style scoped>
-body {
-  background-color: #BEC4C6;
-}
-.nav {
+.app {
+  min-height: 100vh;
   display: flex;
-  justify-content: flex-start;
-  padding: 10px;
+  flex-direction: column;
 }
 
-.button-container {
-  margin-right: 10px;
+.main-content {
+  flex: 1;
+  background-color: #f5f5f5;
 }
 </style>
