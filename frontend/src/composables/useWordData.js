@@ -14,8 +14,8 @@ export function useWordData() {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
-      const data = await response.json()
-      wordMatchingData.value = data
+      const responseJson = await response.json()
+      wordMatchingData.value = responseJson.data
     } catch (err) {
       console.error('Error fetching word matching data:', err)
       error.value = err.message || 'Failed to load word data. Please try again.'
