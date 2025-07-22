@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Button from '../ui/Button.vue';
 import { useAuthStore } from '../../stores/auth';
 
 const magicword = ref('');
 
 const authStore = useAuthStore();
+
+// Use computed properties to track auth store state
+const guestMode = computed(() => authStore.guestMode);
+const token = computed(() => authStore.token);
 
 const cancel = () => {
     authStore.guestMode = true;
@@ -19,8 +23,8 @@ const onSubmit = async () => {
 }
 </script>
 
-<template v-if="!authStore.token && !authStore.guestMode">
-    <div class="modal-overlay">
+<template>
+    <div class="modal-overlay" v-if="!token && !guestMode">
         <div class="modal-container" data-testid="login-container">
             <h3>Would you like to login?</h3>
             <form class="login-form" data-testid="login-form">
