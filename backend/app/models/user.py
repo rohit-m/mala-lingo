@@ -18,3 +18,6 @@ class LoginResponse(BaseModel):
     message: str
     access_token: str
     user: dict 
+
+class MagicwordRequest(BaseModel):
+    magicword: str

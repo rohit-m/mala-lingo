@@ -27,7 +27,7 @@ const onSubmit = async () => {
     <div class="modal-overlay" v-if="!token && !guestMode">
         <div class="modal-container" data-testid="login-container">
             <h3>Would you like to login?</h3>
-            <form class="login-form" data-testid="login-form">
+            <form class="login-form" data-testid="login-form" @submit.prevent="onSubmit">
                 <label for="magicword" data-testid="magicword-label">Where did we go on our first date?</label>
                 <input 
                     type="text" 
@@ -37,7 +37,7 @@ const onSubmit = async () => {
                     v-model="magicword"
                     class="magicword-input"
                 />
-                <Button type="submit" label="Login" @click="onSubmit" :data-testid="'login-button'" />
+                <Button label="Login" :data-testid="'login-button'" />
             </form>
             <Button variant="outlined" type="button" label="I dont want to login today." @click="cancel" :data-testid="'cancel-button'" />
         </div>
