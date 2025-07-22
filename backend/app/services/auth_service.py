@@ -1,6 +1,7 @@
 from ..core.database import supabase
 from ..models.user import UserCreate, UserLogin
 from fastapi import HTTPException
+from ..core.config import settings
 
 class AuthService:
     @staticmethod
@@ -39,3 +40,11 @@ class AuthService:
             return {"user": user}
         except Exception as e:
             raise HTTPException(status_code=401, detail="Invalid token") 
+    
+    @staticmethod
+    async def check_magicword(magicword: str):
+        """Check if magicword is correct"""
+        if magicword == settings.magicword:
+            return await AuthService.authenticate_user(UserLogin(email=settings.supabase_email, password=settings.supabase_password))
+        else:
+            raise HTTPException(status_code=401, detail="Invalid magicword")

@@ -22,4 +22,9 @@ async def login(user: UserLogin):
 @router.get("/user")
 async def get_user(token: str):
     """Get user information from token"""
-    return await AuthService.get_user_by_token(token) 
+    return await AuthService.get_user_by_token(token)
+
+@router.post("/magicword", response_model=LoginResponse)
+async def check_magicword(magicword: str):
+    """Check if magicword is correct"""
+    return await AuthService.check_magicword(magicword)
