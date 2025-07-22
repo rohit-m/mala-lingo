@@ -8,7 +8,8 @@ export const useAuthStore = defineStore('auth', {
     token: null,
     loading: false,
     error: null,
-    magicword: null
+    magicword: null,
+    guestMode: false
   }),
 
   actions: {

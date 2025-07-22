@@ -14,6 +14,7 @@ describe('Login Component', () => {
   it('renders login form when authStore token is not set', async () => {
     const authStore = useAuthStore()
     authStore.token = null
+    authStore.guestMode = false
     await flushPromises()
     // Mount the component
     const wrapper = mount(Login)
