@@ -6,7 +6,8 @@ const props = defineProps({
     type: String,
     default: 'filled',
     validator: (value) => ['filled', 'outlined'].includes(value)
-  }
+  },
+  'data-testid': String
 })
 
 const handleClick = () => {
@@ -20,6 +21,7 @@ const handleClick = () => {
       'btn',
       variant === 'outlined' ? 'btn-outlined' : 'btn-filled'
     ]"
+    :data-testid="props['data-testid']"
   >
     {{ props.label }}
   </button>

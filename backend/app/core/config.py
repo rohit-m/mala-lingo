@@ -29,6 +29,11 @@ class Settings(BaseSettings):
     # Server Settings
     host: str = "0.0.0.0"
     port: int = 8000
+
+    # Login settings
+    supabase_email: str = os.getenv("SUPABASE_EMAIL", "")
+    supabase_password: str = os.getenv("SUPABASE_PASSWORD", "")
+    magicword: str = os.getenv("MAGICWORD", "")
     
     class Config:
         env_file = ".env"

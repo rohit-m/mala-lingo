@@ -1,4 +1,56 @@
+
+<script setup>
+import { onMounted, computed } from 'vue'
+import { useWordData } from '../composables/useWordData'
+import { useFlipCardGame } from '../composables/useGameState'
+import { useAuthStore } from '../stores/auth'
+
+// UI Components
+import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
+import ErrorMessage from '../components/ui/ErrorMessage.vue'
+import GameHeader from '../components/ui/GameHeader.vue'
+import GameStatus from '../components/game/GameStatus.vue'
+import FlipCard from '../components/game/FlipCard.vue'
+import Login from '../components/layout/login.vue'
+
+// Composables
+const { loading, error, wordMatchingData, fetchWordData, retryFetch } = useWordData()
+const { flippedCards, flippedCount, flipCard, resetCards } = useFlipCardGame()
+
+const authStore = useAuthStore()
+
+// Game score for GameStatus
+const gameScore = computed(() => ({
+    current: flippedCount.value,
+    total: wordMatchingData.value.length
+}))
+
+// Game actions for GameStatus component
+const gameActions = computed(() => [
+    {
+        label: 'New Cards',
+        onClick: () => {
+            resetCards()
+            fetchWordData()
+        },
+        variant: 'filled',
+        icon: '🔄'
+    },
+    {
+        label: 'Reset All Cards',
+        onClick: resetCards,
+        variant: 'outlined'
+    }
+])
+
+// Load data on mount
+onMounted(() => {
+    fetchWordData()
+})
+</script>
+
 <template>
+    <Login />
     <div class="flip-test-container">
         <GameHeader
             title="Flip Test"
@@ -46,51 +98,6 @@
     </div>
 </template>
 
-<script setup>
-import { onMounted, computed } from 'vue'
-import { useWordData } from '../composables/useWordData'
-import { useFlipCardGame } from '../composables/useGameState'
-
-// UI Components
-import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
-import ErrorMessage from '../components/ui/ErrorMessage.vue'
-import GameHeader from '../components/ui/GameHeader.vue'
-import GameStatus from '../components/game/GameStatus.vue'
-import FlipCard from '../components/game/FlipCard.vue'
-
-// Composables
-const { loading, error, wordMatchingData, fetchWordData, retryFetch } = useWordData()
-const { flippedCards, flippedCount, flipCard, resetCards } = useFlipCardGame()
-
-// Game score for GameStatus
-const gameScore = computed(() => ({
-    current: flippedCount.value,
-    total: wordMatchingData.value.length
-}))
-
-// Game actions for GameStatus component
-const gameActions = computed(() => [
-    {
-        label: 'New Cards',
-        onClick: () => {
-            resetCards()
-            fetchWordData()
-        },
-        variant: 'filled',
-        icon: '🔄'
-    },
-    {
-        label: 'Reset All Cards',
-        onClick: resetCards,
-        variant: 'outlined'
-    }
-])
-
-// Load data on mount
-onMounted(() => {
-    fetchWordData()
-})
-</script>
 
 <style scoped>
 .flip-test-container {
