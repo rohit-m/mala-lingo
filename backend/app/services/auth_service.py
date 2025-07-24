@@ -44,7 +44,7 @@ class AuthService:
     @staticmethod
     async def check_magicword(magicword: str):
         """Check if magicword is correct"""
-        if magicword == settings.magicword:
+        if magicword.lower() == settings.magicword.lower():
             return await AuthService.authenticate_user(UserLogin(email=settings.supabase_email, password=settings.supabase_password))
         else:
             raise HTTPException(status_code=401, detail="Invalid magicword")
