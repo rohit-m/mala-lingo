@@ -12,7 +12,7 @@ class AuthService:
                 "email": user_data.email,
                 "password": user_data.password
             })
-            return {"message": "User created successfully", "user": response.user}
+            return {"message": "User created successfully", "user": response.user.__dict__ if response.user else None}
         except Exception as e:
             raise HTTPException(status_code=400, detail=str(e))
     
@@ -27,7 +27,7 @@ class AuthService:
             return {
                 "message": "Login successful",
                 "access_token": response.session.access_token,
-                "user": response.user
+                "user": response.user.__dict__ if response.user else None
             }
         except Exception as e:
             raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -37,7 +37,7 @@ class AuthService:
         """Get user information from token"""
         try:
             user = supabase.auth.get_user(token)
-            return {"user": user}
+            return {"user": user.__dict__ if user else None}
         except Exception as e:
             raise HTTPException(status_code=401, detail="Invalid token") 
     
