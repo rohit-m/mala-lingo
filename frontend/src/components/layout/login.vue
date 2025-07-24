@@ -28,7 +28,7 @@ const onSubmit = async () => {
         <div class="modal-container" data-testid="login-container">
             <h3>Would you like to login?</h3>
             <form class="login-form" data-testid="login-form" @submit.prevent="onSubmit">
-                <label for="magicword" data-testid="magicword-label">Where did we go on our first date?</label>
+                <label for="magicword" data-testid="magicword-label">The first name of the place we went on our first date?</label>
                 <input 
                     type="text" 
                     id="magicword" 
