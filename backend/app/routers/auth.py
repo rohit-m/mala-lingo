@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from ..models.user import UserCreate, UserLogin, LoginResponse
+from ..models.user import UserCreate, UserLogin, LoginResponse, MagicwordRequest
 from ..services.auth_service import AuthService
 
 router = APIRouter(prefix="/api/auth", tags=["authentication"])
@@ -22,4 +22,14 @@ async def login(user: UserLogin):
 @router.get("/user")
 async def get_user(token: str):
     """Get user information from token"""
-    return await AuthService.get_user_by_token(token) 
+    return await AuthService.get_user_by_token(token)
+
+@router.post("/magicword", response_model=LoginResponse)
+async def check_magicword(request: MagicwordRequest):
+    """Check if magicword is correct"""
+    result = await AuthService.check_magicword(request.magicword)
+    return LoginResponse(
+        message=result["message"],
+        access_token=result["access_token"],
+        user=result["user"]
+    )

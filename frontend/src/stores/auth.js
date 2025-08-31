@@ -7,7 +7,9 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     token: null,
     loading: false,
-    error: null
+    error: null,
+    magicword: null,
+    guestMode: false
   }),
 
   actions: {
@@ -67,6 +69,25 @@ export const useAuthStore = defineStore('auth', {
         } catch (error) {
           this.logout()
         }
+      }
+    },
+
+    async checkMagicword(magicword) {
+      this.loading = true
+      this.error = null
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/magicword`, {
+          magicword
+        })
+        this.token = response.data.access_token
+        localStorage.setItem('token', this.token)
+        return response.data
+      } catch (error) {
+        this.error = error.response?.data?.detail || 'An error occurred during magicword check'
+        throw error
+      }
+      finally {
+        this.loading = false
       }
     }
   }
